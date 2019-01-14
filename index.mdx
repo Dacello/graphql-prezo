@@ -1,0 +1,211 @@
+export theme from './theme';
+
+import { Notes, Appear } from 'mdx-deck'
+
+
+# GraphQL
+<img width="100px" src='./gql_icon2.png' />
+
+### *for dummies*
+
+---
+
+# What is GraphQL
+- Stands for "Graph Query Language"
+- An API specification invented by Facebook
+- An efficient and flexible alternative to REST
+- Enables declarative data fetching
+
+<img width='100%' src='./graphql_img1.png' />
+
+---
+
+# REST API Endpoints
+<img width='100%' src='./rest.png' />
+
+---
+
+# REST - Shortcomings
+- Over/under fetching of data
+- Each endpoint is structured according to clients needs
+- Less flexible when client needs change <br />(or differ accross multiple clients)
+- Many UI change will likely require server changes
+
+---
+
+GraphQL was developed to cope with the need for more flexibility and efficiency in client-server communication
+<img width="100px" src='./gql_icon2.png' />
+
+---
+
+# GraphQL - Advantages
+- Client requests precisely what data it wants
+- No over/under fetching of data
+- One endpoint to rule them all
+- Minimizes the data transfered over the network
+- Flexibility allows for rapid product iteration 
+- Strongly typed Schema
+- Can be used to unify existing systems and hide complexity of data fetching logic
+
+---
+
+# Schema
+- Defines the structure and capabilites of the API
+- A collection of GraphQL Types
+- Serves as a contract between client and server
+
+```
+type Author {
+  id: String!
+  name: String
+  books: [Book]
+}
+```
+
+```
+type Book {
+  id: String!
+  name: String
+  author: Author
+}
+```
+
+---
+
+# Queries
+- How the client requests information from a GraphQL server
+- Can request as much or as little information as necessary
+- Allows for naturally querying nested information
+- All possible queries are defined by the Schema
+
+---
+
+# Example Query Request
+```
+{
+	books {
+		name
+		genre
+		author{
+			name
+			books{
+				name
+			}
+		}
+	}
+}
+```
+
+---
+
+# Example Query Response
+```
+{
+	"books": [
+		{
+			"name": "Harry Potter and the Socerer's Stone",
+			"genre": "Fantasy
+			"author": {
+				"name": "J.K. Rowling"
+				"books": [
+					{
+						"name": "Harry Potter and the Chamber of Secrets"
+					},
+					{
+						"name": "Harry Potter and the Prizoner of Azkaban"
+					},
+					{
+						"name": "Harry Potter and the Goblet of Fire"
+					},
+					...
+				]
+			}
+		}
+		...
+	]
+}
+```
+---
+
+# Mutations
+- How to make changes to your data (create/update/delete)
+- Similar syntax to queries
+- All possible mutations are defined by the Schema
+
+---
+
+# Example Mutation Request
+
+```
+mutation {
+	addBook(
+		name: "Harry Potter and the Half Blood Prince",
+		authorId: "1",
+		genre: "Fantasy"
+	) {
+		name
+	}
+}
+```
+
+---
+
+# Example Mutation Response
+```
+{
+  "data": {
+    "addBook": {
+      "name": "Harry Potter and the Half Blood Prince"
+    }
+  }
+}
+```
+
+---
+
+# Resolvers
+- each resolver fetches data for a given field
+- queries/mutations consist of a set of fields
+- the server has one resolver function per field
+
+---
+
+# Resolver Example
+Query:
+```
+{
+	books {
+		name
+		genre
+		author{
+			name
+		}
+	}
+}
+```
+
+Resolver:
+
+---
+
+# Apollo
+- [Apollo Client (React)](https://www.apollographql.com/docs/react/) - a community-driven effort to build an easy-to-understand, flexible and powerful GraphQL client. 
+- [Apollo Server](https://www.apollographql.com/docs/apollo-server/) - the best way to quickly build a production-ready, self-documenting API for GraphQL clients, using data from any source.
+
+---
+
+# Example books app
+
+---
+
+# Autofi corbra example
+
+---
+
+# Some helpful sources:
+- [GraphQL Docs](https://graphql.github.io/code) 
+- [Apollo](https://www.apollographql.com)
+- [Fullstack Tutorial](https://www.howtographql.com/)
+- [Elixir Tutorial] (https://www.howtographql.com/graphql-elixir)
+- [Node Tutorial](https://www.howtographql.com/graphql-js)
+- [React + Apollo Tutorial](https://www.howtographql.com/react-apollo)
