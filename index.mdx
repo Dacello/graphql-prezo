@@ -81,15 +81,15 @@ type Book {
 
 ```
 {
-	books {
-		name
-		author {
-			name
-			books {
-				name
-			}
-		}
-	}
+  books {
+    name
+    author {
+      name
+      books {
+        name
+      }
+    }
+  }
 }
 ```
 
@@ -98,24 +98,24 @@ type Book {
 # Query Response
 ```
 {
-	"books": [
-		{
-			"name": "Harry Potter and the Socerer's Stone",
-			"author": {
-				"name": "J.K. Rowling"
-				"books": [
-					{
-						"name": "Harry Potter and the Chamber of Secrets"
-					},
-					{
-						"name": "Harry Potter and the Prizoner of Azkaban"
-					},
-					...
-				]
-			}
-		}
-		...
-	]
+  "books": [
+    {
+      "name": "Harry Potter and the Socerer's Stone",
+      "author": {
+        "name": "J.K. Rowling"
+        "books": [
+          {
+            "name": "Harry Potter and the Chamber of Secrets"
+          },
+          {
+            "name": "Harry Potter and the Prizoner of Azkaban"
+          },
+          ...
+        ]
+      }
+    }
+    ...
+  ]
 }
 ```
 ---
@@ -127,13 +127,13 @@ type Book {
 
 ```
 mutation {
-	addBook(
-		name: "Harry Potter and the Half Blood Prince",
-		authorId: "1",
-		genre: "Fantasy"
-	) {
-		name
-	}
+  addBook(
+    name: "Harry Potter and the Half Blood Prince",
+    authorId: "1",
+    genre: "Fantasy"
+  ) {
+    name
+  }
 }
 ```
 
@@ -158,18 +158,18 @@ mutation {
 - The resolver will fetch data for its corresponding field
 ```
 const BookType = new GraphQLObjectType({
-	name: 'Book',
-	fields: () => ({
-		id: { type: GraphQLID },
-		name: { type: GraphQLString },
-		genre: { type: GraphQLString },
-		author: {
-			type: AuthorType,
-			resolve(parent, args){
-				return Author.findById(parent.authorId);
-			}
-		}
-	})
+  name: 'Book',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent, args){
+        return Author.findById(parent.authorId);
+      }
+    }
+  })
 });
 ```
 
