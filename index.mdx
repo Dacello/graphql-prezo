@@ -53,7 +53,7 @@ GraphQL was developed to cope with the need for more flexibility and efficiency 
 - Defines the structure and capabilites of the API
 - A collection of GraphQL Types
 - Serves as a contract between client and server
-
+- [GraphQL Schema Language Cheatsheet](https://wehavefaces.net/graphql-shorthand-notation-cheatsheet-17cd715861b6)
 ```
 type Author {
   id: String!
@@ -66,6 +66,7 @@ type Author {
 type Book {
   id: String!
   name: String
+  genre: String
   author: Author
 }
 ```
@@ -78,17 +79,13 @@ type Book {
 - Allows for naturally querying nested information
 - All possible queries are defined by the Schema
 
----
-
-# Example Query Request
 ```
 {
 	books {
 		name
-		genre
-		author{
+		author {
 			name
-			books{
+			books {
 				name
 			}
 		}
@@ -98,13 +95,12 @@ type Book {
 
 ---
 
-# Example Query Response
+# Query Response
 ```
 {
 	"books": [
 		{
 			"name": "Harry Potter and the Socerer's Stone",
-			"genre": "Fantasy
 			"author": {
 				"name": "J.K. Rowling"
 				"books": [
@@ -113,9 +109,6 @@ type Book {
 					},
 					{
 						"name": "Harry Potter and the Prizoner of Azkaban"
-					},
-					{
-						"name": "Harry Potter and the Goblet of Fire"
 					},
 					...
 				]
@@ -132,10 +125,6 @@ type Book {
 - Similar syntax to queries
 - All possible mutations are defined by the Schema
 
----
-
-# Example Mutation Request
-
 ```
 mutation {
 	addBook(
@@ -150,7 +139,7 @@ mutation {
 
 ---
 
-# Example Mutation Response
+# Mutation Response
 ```
 {
   "data": {
@@ -164,27 +153,25 @@ mutation {
 ---
 
 # Resolvers
-- each resolver fetches data for a given field
-- queries/mutations consist of a set of fields
-- the server has one resolver function per field
-
----
-
-# Resolver Example
-Query:
+- Queries/Mutations payloads consist of a set of fields
+- Each field corresponds to a resolver function in the server
+- The resolver will fetch data for its corresponding field
 ```
-{
-	books {
-		name
-		genre
-		author{
-			name
+const BookType = new GraphQLObjectType({
+	name: 'Book',
+	fields: () => ({
+		id: { type: GraphQLID },
+		name: { type: GraphQLString },
+		genre: { type: GraphQLString },
+		author: {
+			type: AuthorType,
+			resolve(parent, args){
+				return Author.findById(parent.authorId);
+			}
 		}
-	}
-}
+	})
+});
 ```
-
-Resolver:
 
 ---
 
@@ -194,15 +181,18 @@ Resolver:
 
 ---
 
-# Example books app
+# Example Books List App
+- [Client App - Apollo Client (React)](http://localhost:3006)
+- [GraphQL Playground - Apollo Server](http://localhost:4000)
 
 ---
 
-# Autofi corbra example
+# Autofi GraphQL API
+- [Cobra GraphQL Playground](http://localhost:3011/graphql?loanApplication=5c01b5ada0dbcb2484bb71fd)
 
 ---
-
-# Some helpful sources:
+# Thanks!
+#### Some helpful links:
 - [GraphQL Docs](https://graphql.github.io/code) 
 - [Apollo](https://www.apollographql.com)
 - [Fullstack Tutorial](https://www.howtographql.com/)
